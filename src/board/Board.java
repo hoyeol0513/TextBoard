@@ -26,15 +26,31 @@ public class Board {
 				//프로그램이 자동으로 만들어줘야 한다. (데이터베이스에도 필요함.)
 				addArticle();	
 			} else if(cmd.equals("list")){
-				ShowList();	
+				ShowList(articles);	
 			} else if (cmd.equals("update")) {
 				updateArticle();
 			} else if (cmd.equals("delete")) {
 				deleteArticle();
+			} else if (cmd.equals("search")) {
+				searchArticle();
 			}
 		}
 	}
 	
+	private void searchArticle() {
+		System.out.print("검색 키워드를 입력해주세요 : ");
+		String keyword = sc.nextLine();
+				
+		ArrayList<Article> searchedArticles = new ArrayList<>();
+		
+		for(int i = 0; i < articles.size(); i++) {
+			if(articles.get(i).title.contains(keyword)) { //검색조건 : 문자가 포함되어있다면
+				searchedArticles.add(articles.get(i)); //검색된 것만 담기
+			}
+		}
+		ShowList(searchedArticles);
+	}
+
 	private void deleteArticle() {
 		System.out.print("삭제할 게시물 번호 : ");
 		int targetNo = Integer.parseInt(sc.nextLine());
@@ -49,7 +65,7 @@ public class Board {
 			//번호도 지워야함.
 			System.out.println("삭제가 완료되었습니다.");
 			no--;
-			ShowList();
+			ShowList(articles);
 		}
 		
 	}
@@ -72,7 +88,7 @@ public class Board {
 			articles.set(targetIndex,article); //게시물 제목,내용 (article안에) 수정		
 			
 			System.out.println("수정이 완료되었습니다.");
-			ShowList();
+			ShowList(articles);
 		}
 	}
 	
@@ -113,9 +129,12 @@ public class Board {
 		return -1; //for문을 다 돌았을 때까지 없으면 targetIndex를 -1로 반환
 	}
 	
-	public void ShowList() {
-		for(int i =0; i<articles.size();i++) {
-			Article article = articles.get(i);
+	public void ShowList(ArrayList<Article> list) { 
+		//메서드화 시킬 때 출력할 목록이 다를 수 있어서 매개변수가 필요하다는 것 인지하기
+		//list는 전체 article일 수도 있고, 검색된 article만 일 수도 있고, 정렬된 article일 수도 있음.
+		
+		for(int i =0; i < list.size();i++) {
+			Article article = list.get(i);
 						
 			System.out.println("번호 : " + article.id);
 			System.out.println("제목 : " + article.title);
