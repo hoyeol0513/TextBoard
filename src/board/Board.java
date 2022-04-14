@@ -39,10 +39,37 @@ public class Board {
 				deleteArticle();
 			} else if (cmd.equals("search")) {
 				searchArticle();
+			} else if (cmd.equals("read")) {
+				readArticle();
 			}
 		}
 	}
 	
+	private void readArticle() {
+		System.out.print("상세보기할 게시물 번호 : ");
+		int targetNo = Integer.parseInt(sc.nextLine());
+		
+		int targetIndex = getIndexofArticleNo(targetNo);
+		
+		if(targetIndex == -1) {
+			System.out.println("없는 게시물입니다.");
+		} else {
+			Article article = articles.get(targetIndex);
+			
+			System.out.println("==== " + article.id +"번 게시물 ====");
+			System.out.println("번호 : " + article.id);
+			System.out.println("제목 : " + article.title);
+			System.out.println("-------------------");
+			System.out.println("내용 : " + article.body);
+			System.out.println("-------------------");
+			System.out.println("작성자 : " + article.writer);
+			System.out.println("등록날짜 : " + article.regDate);
+			System.out.println("===================");
+		}   
+		
+	}
+
+
 	private void makeTextdata() {
 		//테스트 데이터 3개 미리 저장하기
 		articles.add(new Article(1,"안녕하세요","내용1입니다.",MyUtil.getCurrentDate("yyyy년 MM월 dd일"),"익명",0));
