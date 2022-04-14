@@ -2,16 +2,22 @@
 package board;
 
 import java.util.ArrayList;
+
 import java.util.Scanner;
+
+import board.util.MyUtil;
 
 public class Board {
 
 	ArrayList<Article> articles = new ArrayList<>();
-	
 	int no = 1; //게시물 번호
-	
 	Scanner sc = new Scanner(System.in);
 	
+	public Board() { //Board의 생성자 (나올 때 처음에 테스트 데이터를 갖고 있어라)
+		makeTextdata();
+	}
+
+
 	public void runBoard() {
 		
 		while(true) {
@@ -37,6 +43,13 @@ public class Board {
 		}
 	}
 	
+	private void makeTextdata() {
+		//테스트 데이터 3개 미리 저장하기
+		articles.add(new Article(1,"안녕하세요","내용1입니다.",MyUtil.getCurrentDate("yyyy년 MM월 dd일"),"익명",0));
+		articles.add(new Article(2,"반갑습니다","내용2입니다.",MyUtil.getCurrentDate("yyyy년 MM월 dd일"),"익명",0));
+		articles.add(new Article(3,"안녕안녕","내용3입니다.",MyUtil.getCurrentDate("yyyy년 MM월 dd일"),"익명",0));
+	} //add하면 게시물 번호 4번부터 시작함.
+	
 	private void searchArticle() {
 		System.out.print("검색 키워드를 입력해주세요 : ");
 		String keyword = sc.nextLine();
@@ -48,6 +61,7 @@ public class Board {
 				searchedArticles.add(articles.get(i)); //검색된 것만 담기
 			}
 		}
+		
 		ShowList(searchedArticles);
 	}
 
@@ -84,7 +98,7 @@ public class Board {
 			System.out.print("새내용 : ");
 			String body = sc.nextLine();
 			
-			Article article = new Article(targetNo, title, body);
+			Article article = new Article(targetNo, title, body,"2021.11.11","익명",0);
 			articles.set(targetIndex,article); //게시물 제목,내용 (article안에) 수정		
 			
 			System.out.println("수정이 완료되었습니다.");
@@ -96,9 +110,10 @@ public class Board {
 		System.out.print("제목을 입력해주세요 : ");
 		String title = sc.nextLine();
 		System.out.print("내용을 입력해주세요 : ");
-		String body = sc.nextLine();
+		String body = sc.nextLine();	
+		String currentDate = MyUtil.getCurrentDate("yyyy년 MM월 dd일"); //현재 날짜 구하기 (시스템 시계, 시스템 타임존)
 		
-		Article article = new Article(no, title, body);
+		Article article = new Article(no, title, body,currentDate,"익명",0);
 		articles.add(article);
 		
 		System.out.println("게시물이 저장되었습니다.");
@@ -138,6 +153,9 @@ public class Board {
 						
 			System.out.println("번호 : " + article.id);
 			System.out.println("제목 : " + article.title);
+			System.out.println("작성자 : " + article.writer);
+			System.out.println("등록날짜 : " + article.regDate);
+			System.out.println("조회수 : " + article.hit);
 			System.out.println("=====================");									
 		}
 	}
